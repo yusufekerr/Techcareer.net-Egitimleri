@@ -1,0 +1,74 @@
+USE Bitirme_Projesi;
+GO
+
+---EN çok sipariş veren 5 Müşteri----
+SELECT TOP 5 m.ad, m.soyad, COUNT(s.id) AS siparis_sayisi
+FROM Musteri m
+JOIN Siparis s ON m.musteri_id = s.musteri_id
+GROUP BY m.ad, m.soyad
+ORDER BY siparis_sayisi DESC;
+
+---En çok satılan ürünler----
+SELECT TOP 5 u.urun_adi, SUM(sd.adet) AS toplam_adet
+FROM Urun u
+JOIN Siparis_Detay sd ON u.urun_id = sd.urun_id
+GROUP BY u.urun_adi
+ORDER BY toplam_adet DESC;
+
+
+---En yüksek cirosu olan satıcılar-----
+SELECT TOP 5 s.satici_adi, SUM(sd.adet * u.fiyat) AS toplam_ciro
+FROM Satici s
+JOIN Urun u ON s.satici_id = u.satici_id
+JOIN Siparis_Detay sd ON u.urun_id = sd.urun_id
+GROUP BY s.satici_adi
+ORDER BY toplam_ciro DESC;
+
+---Şehirlere göre müşteri sayısı----
+SELECT sehir, COUNT(*) AS musteri_sayisi
+FROM Musteri
+GROUP BY sehir;
+
+----Kategori Bazlı Toplam Satışlar----
+SELECT k.kategori_adi, SUM(sd.adet * u.fiyat) AS toplam_satis
+FROM Kategori k
+JOIN Urun u ON k.kategori_id = u.kategori_id
+JOIN Siparis_Detay sd ON u.urun_id = sd.urun_id
+GROUP BY k.kategori_adi;
+
+---Aylara Göre Satış Sayıları----
+SELECT MONTH(s.tarih) AS ay, COUNT(*) AS siparis_sayisi
+FROM Siparis s
+GROUP BY MONTH(s.tarih)
+ORDER BY ay;
+
+-------------JOIN Sorguları-------------
+
+-- Siparişlerde müşteri bilgisi + ürün bilgisi + satıcı bilgisi----------
+SELECT s.id AS siparis_no, m.ad, m.soyad, u.urun_adi, st.satici_adi, sd.adet, (sd.adet * u.fiyat) AS toplam_tutar
+FROM Siparis s
+JOIN Musteri m ON s.musteri_id = m.musteri_id
+JOIN Siparis_Detay sd ON s.id = sd.siparis_id
+JOIN Urun u ON sd.urun_id = u.urun_id
+JOIN Satici st ON u.satici_id = st.satici_id;
+
+-- Hiç satılmamış ürünler-------------------
+SELECT u.urun_adi
+FROM Urun u
+LEFT JOIN Siparis_Detay sd ON u.urun_id = sd.urun_id
+WHERE sd.urun_id IS NULL;
+
+-- Hiç sipariş vermemiş müşteriler------------------
+SELECT m.ad, m.soyad
+FROM Musteri m
+LEFT JOIN Siparis s ON m.musteri_id = s.musteri_id
+WHERE s.musteri_id IS NULL;
+
+------------------En çok Kazanç Sağlayan 3 Kategori------------
+SELECT TOP 3 k.kategori_adi, SUM(sd.adet * u.fiyat) AS toplam_kazanc
+FROM Kategori k
+JOIN Urun u ON k.kategori_id = u.kategori_id
+JOIN Siparis_Detay sd ON u.urun_id = sd.urun_id
+GROUP BY k.kategori_adi
+ORDER BY toplam_kazanc DESC;
+

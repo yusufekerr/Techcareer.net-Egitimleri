@@ -1,0 +1,131 @@
+USE Bitirme_Projesi;
+GO
+
+--Veri Ekleme Komutları-----
+INSERT INTO Musteri (musteri_id,ad, soyad, email, sehir)
+VALUES  (1,'Yusuf', 'Eker', 'yusufeker425@gmail.com', 'İstanbul'),
+        (2,'Remzi', 'Özsever', 'remzi@gmail.com', 'İstanbul'),
+        (3,'Ceyda','Işık','ceyda@gmail.com','İstanbul'),
+        (4,'Selim','Haksever','selim@gmail.com','Sivas'),
+        (5,'Seyda','Celik','seyda@gmail.com','Düzce');
+INSERT INTO Musteri (musteri_id,ad, soyad, email, sehir)
+VALUES  (6, 'Ahmet', 'Yılmaz', 'ahmet.yilmaz@gmail.com', 'Ankara'),
+        (7, 'Ayşe', 'Demir', 'ayse.demir@gmail.com', 'İzmir'),
+        (8, 'Mehmet', 'Kaya', 'mehmet.kaya@gmail.com', 'Bursa'),
+        (9, 'Fatma', 'Şahin', 'fatma.sahin@gmail.com', 'Antalya'),
+        (10, 'Can', 'Çelik', 'can.celik@gmail.com', 'Konya'),
+        (11, 'Zeynep', 'Acar', 'zeynep.acar@gmail.com', 'Trabzon'),
+        (12, 'Burak', 'Öztürk', 'burak.ozturk@gmail.com', 'Adana'),
+        (13, 'Elif', 'Koç', 'elif.koc@gmail.com', 'Eskişehir'),
+        (14, 'Murat', 'Kurt', 'murat.kurt@gmail.com', 'Kayseri'),
+        (15, 'Seda', 'Aslan', 'seda.aslan@gmail.com', 'Gaziantep');
+
+INSERT INTO Kategori (kategori_id, kategori_adi)
+VALUES (1,'ev eşyaları'),
+       (2, 'elektronik eşyalar'),
+       (3, 'giyim'),
+       (4, 'züccaciye'),
+       (5, 'yiyecek');
+
+INSERT INTO Satici (satici_id,satici_adi,satici_adresi)
+VALUES (1, 'Hamza Ozsever', 'Fındıklı Mahallesi Maltepe İstanbul'),
+       (2, 'Selim Haktanır', 'Icerenkoy Mahallesi Atasehir İstanbul'),
+       (3, 'Elif Pek', 'Cevizli Mahallesi Maltepe İstanbul'),
+       (4, 'Feyza Dal', 'Salkım Mahallesi Serdivan Bolu'),
+       (5, 'Görkem Sevindik', 'Akcakoca Mahallesi Urla İzmir');
+
+INSERT INTO Urun (urun_id, urun_adi, fiyat, stok, kategori_id, satici_id)
+VALUES (1, 'Telefon', 10000.00, 100, 2, 1),
+       (2, 'Tablet', 7500, 50, 2, 1),
+       (3, 'Koltuk', 3500, 50, 1, 2),
+       (4, 'Halı',1400, 75, 1, 2),
+       (5, 'Mont', 1000, 50, 3,3),
+       (6, 'Ayakkabı', 750, 40, 3, 3),
+       (7, 'Yazma', 150, 50, 4, 4),
+       (8, 'Biblo', 30, 100, 4, 4),
+       (9, 'Kek', 100, 300, 5, 5),
+       (10, 'Ekmek', 5, 500, 5,5);
+
+INSERT INTO Siparis (id, musteri_id, toplam_tutar, odeme_turu)
+VALUES (1, 1, 1500, 'Kart'),
+       (2, 2, 3000, 'Kredi'),
+       (3, 3, 6000, 'Kart'),
+       (4, 4, 8000, 'Taksit'),
+       (5, 5, 4500, 'Taksit');
+INSERT INTO Siparis (id, musteri_id, tarih, toplam_tutar)
+VALUES
+(6, 6, '2023-01-15', 0),
+(7, 7, '2023-02-20', 0),
+(8, 8, '2023-03-05', 0),
+(9, 9, '2023-04-12', 0),
+(10, 10, '2023-05-08', 0),
+(11, 11, '2023-06-19', 0),
+(12, 12, '2023-07-22', 0),
+(13, 13, '2023-08-30', 0),
+(14, 14, '2023-09-10', 0),
+(15, 15, '2023-10-25', 0);
+
+INSERT INTO Siparis_Detay (id, siparis_id, urun_id, adet, fiyat)
+VALUES (1,1,1,2,1500),
+       (2,2,2,4, 6000),
+       (3,3,3,6,7000),
+       (4,4,4,2,1500),
+       (5,5,5,3,2000);
+INSERT INTO Siparis_Detay (id, siparis_id, urun_id, adet)
+VALUES
+(6, 6, 1, 2),  
+(7, 6, 3, 1),  
+(8, 7, 2, 1),  
+(9, 7, 5, 2), 
+(10, 8, 4, 1), 
+(11, 8, 6, 3), 
+(12, 9, 2, 2), 
+(13, 9, 7, 1), 
+(14, 10, 1, 1),
+(15, 10, 8, 2),
+(16, 11, 3, 2),
+(17, 11, 9, 1),
+(18, 12, 5, 2),
+(19, 12, 10, 1),
+(20, 13, 4, 1),
+(21, 13, 7, 2),
+(22, 14, 6, 1),
+(23, 14, 8, 3),
+(24, 15, 9, 1),
+(25, 15, 2, 2);
+
+       ---Update Komutları---
+UPDATE Urun
+SET stok = stok - 2
+WHERE urun_id = 1;
+
+UPDATE Urun SET stok = stok - 4 WHERE urun_id = 2;
+UPDATE Urun SET stok = stok - 6 WHERE urun_id = 3;
+UPDATE Urun SET stok = stok - 2 WHERE urun_id = 4;
+UPDATE Urun SET stok = stok - 3 WHERE urun_id = 5;
+
+---Truncate Komutu (Çalıştırmadım çünkü Tabloyu silebilir.)
+TRUNCATE TABLE Kategori;
+
+---Sorgu Komutları-----
+SELECT urun_adi, stok
+FROM Urun
+WHERE stok <= 0;
+
+UPDATE Urun
+SET stok = stok - 3
+WHERE urun_id = 2;
+
+UPDATE Urun
+SET fiyat = 8500
+WHERE urun_adi = 'Tablet';
+
+UPDATE Musteri
+SET email = 'yusuf.eker@halic.edu.tr'
+WHERE musteri_id = 1;
+
+
+
+
+
+

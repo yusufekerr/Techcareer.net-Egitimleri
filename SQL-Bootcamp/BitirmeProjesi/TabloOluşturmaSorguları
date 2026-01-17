@@ -1,0 +1,54 @@
+CREATE DATABASE Bitirme_Projesi;
+
+CREATE TABLE Musteri (
+   musteri_id INT PRIMARY KEY,
+   ad NVARCHAR(50) NOT NULL,
+   soyad NVARCHAR(50) NOT NULL,
+   email NVARCHAR(100) NOT NULL UNIQUE,
+   sehir NVARCHAR(100) NOT NULL,
+   kayit_tarihi DATE DEFAULT GETDATE()
+);
+
+CREATE TABLE Kategori (
+ kategori_id INT PRIMARY KEY,
+ kategori_adi NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Satici (
+ satici_id INT PRIMARY KEY,
+ satici_adi NVARCHAR(100) NOT NULL,
+ satici_adresi NVARCHAR(255)
+);
+
+CREATE TABLE Urun (
+ urun_id INT PRIMARY KEY,
+ urun_adi NVARCHAR(50) NOT NULL UNIQUE,
+ fiyat DECIMAL(8,2) CHECK (fiyat >= 0),
+ stok INT,
+ kategori_id INT NOT NULL,
+ satici_id INT NOT NULL,
+FOREIGN KEY (kategori_id) REFERENCES Kategori(kategori_id),
+FOREIGN KEY (satici_id) REFERENCES Satici(satici_id)
+);
+
+CREATE TABLE Siparis (
+ id INT PRIMARY KEY,
+ musteri_id INT NOT NULL,
+ FOREIGN KEY (musteri_id) REFERENCES Musteri(musteri_id),
+ tarih DATE DEFAULT GETDATE(),
+ toplam_tutar DECIMAL(8,2) CHECK (toplam_tutar >= 0),
+ odeme_turu NVARCHAR(50)
+);
+
+CREATE TABLE Siparis_Detay (
+ id INT PRIMARY KEY,
+ siparis_id INT NOT NULL,
+ urun_id INT NOT NULL,
+FOREIGN KEY (siparis_id) REFERENCES Siparis(id),
+FOREIGN KEY (urun_id) REFERENCES Urun(urun_id),
+ adet INT,
+ fiyat DECIMAL(8,2) CHECK (fiyat >= 0)
+);
+
+SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'Musteri';
